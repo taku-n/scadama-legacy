@@ -1,0 +1,12 @@
+20151011 1.10 Fixed a bug of EVEN. Added a function of SL. Added SQUARE.
+20151008 1.09 change the EVEN margin to 10pt
+20150825 1.08 add new EVEN buttons
+20150820 1.07 add a new CLOSE button that closes positions for each pair
+20150420 1.06 change the price font size, bigger and smaller
+20141106 1.05 実効レバレッジの表示を追加
+20141001 1.04 逆指値仕様変更
+20140925 1.03 レイアウト再考
+20140903 1.02 Obj クラスおよび Objs クラスの実装
+20140314 1.01 決済手法を FIFO から FILO に変更
+              エラーメッセージを変更
+20140314 1.00 リリース
