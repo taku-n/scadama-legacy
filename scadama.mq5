@@ -1,10 +1,8 @@
-#property strict
-
-///////////////////////////////////////////////////////////
-// First of all, you should check the Take Profit Margin //
-// and the Stop Loss Margin of your broker               //
-// because it can cause a trouble in debug.              //
-///////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+// First of all,                                                                   //
+// you should check the Take Profit Margin and the Stop Loss Margin of your broker //
+// because it can cause a trouble in debug.                                        //
+/////////////////////////////////////////////////////////////////////////////////////
 
 #property version "2.0.0"
 
@@ -363,12 +361,13 @@ void OnDeinit(const int reason)
 
 
 // every tick, and chart event
-double UI::ui(const E_FUNC FUNC, const int id, const long &lparam,
-              const double &dparam, const string &sparam)
+double on_event(const E_EVENT_TYPE EVENT_TYPE, const int ID,
+		const long &LPARAM, const double &DPARAM, const string &SPARAM)
 {
+	static bool initialized = false;
+
 	Button *b;
 
-	static bool initialized = false;
 	static Trade trade();
 
 	static Button bid(0, "bid", OBJ_EDIT, 0, 0, 0, "", CORNER_LEFT_UPPER,
@@ -390,11 +389,12 @@ double UI::ui(const E_FUNC FUNC, const int id, const long &lparam,
 		initialized = true;
 	}
 
-	switch (FUNC) {
-	////////////////
-	//// ONTICK ////
-	////////////////
-	case ONTICK:
+	switch (EVENT_TYPE) {
+
+	/////////////////
+	//// ON_TICK ////
+	/////////////////
+	case ON_TICK:
 		Symbols::update();
 		Price::set_prices();
 
@@ -441,14 +441,14 @@ double UI::ui(const E_FUNC FUNC, const int id, const long &lparam,
 		    .set_text(DoubleToStr(Account::get_effective_leverage(), 3));
 
 		break;
-	case ONTIMER:
+	case ON_TIMER:
 		break;
-	case ONTRADE:
+	case ON_TRADE:
 		break;
-	case ONTESTER:
+	case ON_TESTER:
 		break;
-	case ONCHARTEVENT:
-		switch (id) {
+	case ON_CHARTEVENT:
+		switch (ID) {
 		case CHARTEVENT_OBJECT_CLICK:
 		// lparam: the X coordinate, dparam: the Y coordinate
 		// sparam: Name of the graphical object, on which the event occurred
@@ -517,34 +517,31 @@ double UI::ui(const E_FUNC FUNC, const int id, const long &lparam,
 			break;
 		}
 		break;
-	case ONBOOKEVENT:
+	case ON_BOOKEVENT:
 		break;
 	}
 
 	return 0.0;
 }
 
-
 //////////////////
 //// OnTick() ////
 //////////////////
 
-void OnTick()
+void OnTick(void)
 {
-	long   lparam = 0;
-	double dparam = 0.0;
-	string sparam = "";
+	const long   LPARAM = 0;
+	const double DPARAM = 0.0;
+	const string SPARAM = "";
 
-	UI::ui(ONTICK, 0, lparam, dparam, sparam);
+	on_event(ON_TICK, 0, LPARAM, DPARAM, SPARAM);
 }
-
 
 ////////////////////////
 //// OnChartEvent() ////
 ////////////////////////
 
-void OnChartEvent(const int id, const long &lparam,
-                  const double &dparam, const string &sparam)
+void OnChartEvent(const int ID, const long &LPARAM, const double &DPARAM, const string &SPARAM)
 {
-	UI::ui(ONCHARTEVENT, id, lparam, dparam, sparam);
+	on_event(ON_CHARTEVENT, ID, LPARAM, DPARAM, SPARAM);
 }
